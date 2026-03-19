@@ -311,7 +311,7 @@ export default function App() {
             </div>
             
             <div className="mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#46b8c3]/10 text-[#1b6896] text-base font-semibold">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#46b8c3]/10 text-[#1b6896] text-base font-semibold text-[#1b6896]">
                 Reduce EMI Keeping Tenure Same
               </div>
             </div>
@@ -321,13 +321,13 @@ export default function App() {
             
             <div className="bg-gradient-to-br from-[#46b8c3]/15 to-[#46b8c3]/5 rounded-2xl p-6 mb-4 border border-[#46b8c3]/30 relative z-10">
               <p className="text-base font-semibold text-[#144d78] uppercase tracking-wider mb-2">Total Saved</p>
-              <span className="text-4xl font-black text-[#46b8c3] tracking-tight">{formatLakhs(s1Savings)}</span>
+              <span className="text-4xl font-bold text-[#46b8c3] tracking-tight">{formatLakhs(s1Savings)}</span>
             </div>
 
             <div className="bg-[#46b8c3]/10 rounded-2xl p-6 mb-8 border border-[#46b8c3]/20 relative z-10">
               <p className="text-base font-semibold text-[#144d78] uppercase tracking-wider mb-2">Monthly Savings</p>
               <div className="flex items-end gap-2">
-                <span className="text-4xl font-black text-[#46b8c3] tracking-tight">{formatCurrency(s1MonthlySavings)}</span>
+                <span className="text-4xl font-bold text-[#46b8c3] tracking-tight">{formatCurrency(s1MonthlySavings)}</span>
                 <span className="text-base text-[#1b6896] font-medium mb-0.5">/ mo</span>
               </div>
             </div>
@@ -367,13 +367,13 @@ export default function App() {
             
             <div className="bg-gradient-to-br from-[#46b8c3]/20 to-[#46b8c3]/5 rounded-2xl p-6 mb-4 border border-[#46b8c3]/30 relative z-10 backdrop-blur-sm">
               <p className="text-base font-semibold text-[#46b8c3] uppercase tracking-wider mb-2">Total Saved</p>
-              <span className="text-4xl font-black text-[#46b8c3] tracking-tight">{formatLakhs(s2Savings)}</span>
+              <span className="text-4xl font-bold text-[#46b8c3] tracking-tight">{formatLakhs(s2Savings)}</span>
             </div>
 
             <div className="bg-[#46b8c3]/10 rounded-2xl p-6 mb-8 border border-[#46b8c3]/20 relative z-10 backdrop-blur-sm">
               <p className="text-base font-semibold text-[#46b8c3] uppercase tracking-wider mb-2">Time Saved</p>
               <div className="flex items-end gap-2">
-                <span className="text-4xl font-black text-[#46b8c3] tracking-tight">{Math.floor(s2MonthsSaved / 12)}<span className="text-2xl">y</span> {s2MonthsSaved % 12}<span className="text-2xl">m</span></span>
+                <span className="text-4xl font-bold text-[#46b8c3] tracking-tight">{Math.floor(s2MonthsSaved / 12)}<span className="text-2xl">y</span> {s2MonthsSaved % 12}<span className="text-2xl">m</span></span>
                 <span className="text-base text-[#46b8c3] font-medium mb-0.5">earlier</span>
               </div>
             </div>
