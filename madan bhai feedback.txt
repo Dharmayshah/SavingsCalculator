@@ -1,0 +1,20 @@
+First Calculator
+Make it more descriptive, not able to understand what it is saying from first look
+Give one more column for remaining tenure and calculate benefit from that
+Give option to toggle between EMI or Tenure in case of reduction
+Revised EMI or tenure also needed once the rate is there
+
+Want to reduce your EMI now??
+
+
+Second Calculator:
+It is very complicated and the user may not know what to insert where, starting from selection of Salaried/Self-Employed/Professional after that the FOIR, Recognition rate - these are mainly internal to the FIs and the normal layman might not know what these means and what to insert there.
+
+Instead this we can guide in regional language first what these terms means and then redirect to the complex calculator if he wishes to.
+
+Also needs to check each variable, because we can't generalized the same, depend on the type of Institution such as PSUs, Private Bank & NBFCs - For eg LTV / FOIR will be drastically different in PSUs vs NBFC, PSU allowed the LTV upto 80% of documented value, while NBFC allowed upto 90% of market value
+
+
+
+
+
