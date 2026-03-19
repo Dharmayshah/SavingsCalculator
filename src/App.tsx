@@ -410,7 +410,7 @@ export default function App() {
                   monthlySavingsData.push({ year: `Y${y}`, yearNum: y, emiSaved: emiCumulative, tenureSaved: tenureCumulative });
                 }
                 return (<>
-                  <h3 className="text-2xl font-bold text-[#0d3a5c] mb-2">Monthly Savings in Hand</h3>
+                  <h3 className="text-2xl font-bold text-[#0d3a5c] mb-2">Yearly Savings in Hand</h3>
                   <p className="text-base text-slate-500 mb-6">Cumulative savings over time for each strategy</p>
                   <div className="h-[320px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
