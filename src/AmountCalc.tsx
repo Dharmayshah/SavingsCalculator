@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { motion, useInView } from 'motion/react';
+import { motion, AnimatePresence, useInView } from 'motion/react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { AlertCircle, TrendingUp, TrendingDown, Minus, IndianRupee, Percent, Calendar, PiggyBank, Briefcase, Clock, CheckCircle2, Coins } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, IndianRupee, PiggyBank, Clock, CheckCircle2, Coins, ArrowRight, ArrowLeft } from 'lucide-react';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,6 +31,8 @@ const staggerItem = {
 
 const fmt = (n: number) => '₹' + Math.round(n).toLocaleString('en-IN');
 const fmtLakhs = (n: number) => n >= 10000000 ? `₹${(n / 10000000).toFixed(2)} Cr` : `₹${(n / 100000).toFixed(2)} L`;
+const fmtIndian = (n: number) => new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(n);
+const parseIndian = (s: string) => Number(s.replace(/\D/g, '')) || 0;
 
 const getFOIR = (income: number): number => {
   if (income < 50000) return 0.40;
@@ -83,7 +85,20 @@ type AssessmentMethod = 'itr' | 'adb' | 'gst-turnover';
 const RETIREMENT_AGE: Record<Employment, number> = { 'salaried': 60, 'self-employed': 60, 'professional': 65 };
 const MAX_TENURE: Record<Employment, number> = { 'salaried': 30, 'self-employed': 20, 'professional': 30 };
 
+const STEPS = [
+  { id: 1, label: 'Employment' },
+  { id: 2, label: 'Income' },
+  { id: 3, label: 'Profile' },
+  { id: 4, label: 'Loan' },
+  { id: 5, label: 'Obligations' },
+];
+
 const AmountCalc = () => {
+  const [step, setStep] = useState(1);
+  const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
+
+  const goNext = () => { setDirection(1); setStep(s => Math.min(s + 1, STEPS.length)); };
+  const goBack = () => { setDirection(-1); setStep(s => Math.max(s - 1, 1)); };
   const [monthlySalary, setMonthlySalary] = useState(100000);
   const [age, setAge] = useState(30);
   const [cibil, setCibil] = useState(760);
@@ -179,9 +194,15 @@ const AmountCalc = () => {
     };
   }, [derivedMonthlyIncome, recognitionRate, foirOverride, customFOIR, age, cibil, employment, obligations, interestRate, propertyValue, loanApplied, ageError, rateOverride, customRate]);
 
-  const inputClass = "w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-3.5 outline-none border-2 border-transparent focus:border-[#46b8c3] focus:bg-white transition-all";
-  const inputWithPrefixClass = "w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl pl-8 pr-4 py-3.5 outline-none border-2 border-transparent focus:border-[#46b8c3] focus:bg-white transition-all";
-  const labelClass = "text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5";
+  const inputClass = "w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-2 outline-none border border-slate-200 focus:border-[#46b8c3] focus:bg-white transition-all";
+  const inputWithPrefixClass = "w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl pl-8 pr-4 py-2 outline-none border border-slate-200 focus:border-[#46b8c3] focus:bg-white transition-all";
+  const labelClass = "text-sm font-semibold text-slate-400 uppercase tracking-[0.2em] mb-1.5 block";
+
+  const variants = {
+    enter: (d: number) => ({ opacity: 0, x: d * 40 }),
+    center: { opacity: 1, x: 0 },
+    exit: (d: number) => ({ opacity: 0, x: d * -40 }),
+  };
 
   return (
     <>
@@ -190,14 +211,54 @@ const AmountCalc = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-white rounded-3xl border border-slate-200 shadow-sm p-8 mt-10 mb-10"
+        className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 mt-6 mb-8"
       >
-        {/* Employment Type Toggle */}
-        <div className="mb-6">
-          <label className={labelClass}>
-            <Briefcase className="w-3.5 h-3.5" /> Employment Type
-          </label>
-          <div className="grid grid-cols-3 gap-3">
+        {/* ── STEP INDICATOR ── */}
+        <div className="flex items-center gap-1 mb-6">
+          {STEPS.map((s, i) => (
+            <React.Fragment key={s.id}>
+              <button
+                onClick={() => { setDirection(s.id > step ? 1 : -1); setStep(s.id); }}
+                className="flex items-center gap-1.5 group"
+              >
+                <div className={cn(
+                  'w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all',
+                  step === s.id
+                    ? 'bg-[#144d78] text-white scale-110'
+                    : step > s.id
+                    ? 'bg-[#46b8c3] text-white'
+                    : 'bg-slate-100 text-slate-400'
+                )}>
+                  {step > s.id ? '✓' : s.id}
+                </div>
+                <span className={cn(
+                  'text-xs font-semibold hidden sm:block transition-colors',
+                  step === s.id ? 'text-[#144d78]' : step > s.id ? 'text-[#46b8c3]' : 'text-slate-400'
+                )}>{s.label}</span>
+              </button>
+              {i < STEPS.length - 1 && (
+                <ArrowRight className={cn('w-3.5 h-3.5 flex-shrink-0 mx-0.5', step > s.id ? 'text-[#46b8c3]' : 'text-slate-200')} />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+        {/* ── SCREEN CONTENT ── */}
+        <div className="overflow-hidden">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={step}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.22, ease: 'easeInOut' }}
+            >
+
+        {/* Employment Type */}
+        <div className="mb-4">
+          <label className={labelClass}>Employment Type</label>
+          <div className="grid grid-cols-3 gap-2">
             {([
               { value: 'salaried', label: 'Salaried' },
               { value: 'self-employed', label: 'Self-Employed' },
@@ -207,10 +268,10 @@ const AmountCalc = () => {
                 key={value}
                 onClick={() => { setEmployment(value); setAssessmentMethod('itr'); setRecognitionRate(100); }}
                 className={cn(
-                  'py-3 rounded-2xl border-2 text-sm font-semibold transition-all',
+                  'py-2 rounded-2xl border text-sm font-semibold transition-all',
                   employment === value
                     ? 'bg-[#144d78] text-white border-[#144d78]'
-                    : 'bg-[#144d78]/[0.03] text-[#144d78] border-transparent hover:border-[#46b8c3]'
+                    : 'bg-[#144d78]/[0.03] text-[#144d78] border-slate-200 hover:border-[#46b8c3]'
                 )}
               >
                 {label}
@@ -218,17 +279,15 @@ const AmountCalc = () => {
             ))}
           </div>
           {employment === 'professional' && (
-            <p className="text-xs text-[#46b8c3] mt-2 pl-1 font-medium">Tenure extended to age 65</p>
+            <p className="text-xs text-[#46b8c3] mt-1.5 pl-1 font-medium">Tenure extended to age 65</p>
           )}
         </div>
 
         {/* Assessment Method — non-salaried */}
         {employment !== 'salaried' && (
-          <div className="mb-6">
-            <label className={labelClass}>
-              <Percent className="w-3.5 h-3.5" /> Income Assessment
-            </label>
-            <div className="grid grid-cols-3 gap-3">
+          <div className="mb-4">
+            <label className={labelClass}>Income Assessment</label>
+            <div className="grid grid-cols-3 gap-2">
               {([
                 { value: 'itr', label: 'ITR / P&L' },
                 { value: 'adb', label: 'Avg Daily Balance' },
@@ -238,10 +297,10 @@ const AmountCalc = () => {
                   key={value}
                   onClick={() => setAssessmentMethod(value)}
                   className={cn(
-                    'py-2.5 rounded-2xl border-2 text-xs font-semibold transition-all',
+                    'py-2 rounded-2xl border text-sm font-semibold transition-all',
                     assessmentMethod === value
                       ? 'bg-[#1b6896] text-white border-[#1b6896]'
-                      : 'bg-[#46b8c3]/[0.05] text-[#1b6896] border-transparent hover:border-[#46b8c3]'
+                      : 'bg-[#46b8c3]/[0.05] text-[#1b6896] border-slate-200 hover:border-[#46b8c3]'
                   )}
                 >
                   {label}
@@ -257,54 +316,44 @@ const AmountCalc = () => {
           {/* === INCOME SECTION — varies by employment + method === */}
           {employment === 'salaried' ? (
             <div>
-              <label className={labelClass}>
-                <IndianRupee className="w-3.5 h-3.5" /> Monthly Salary
-              </label>
+              <label className={labelClass}>Monthly Salary</label>
               <div className="relative">
                 <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">₹</span>
-                <input type="number" value={monthlySalary} onChange={(e) => setMonthlySalary(Number(e.target.value))} className={inputWithPrefixClass} />
+                <input type="text" inputMode="numeric" value={fmtIndian(monthlySalary)} onChange={(e) => setMonthlySalary(parseIndian(e.target.value))} className={inputWithPrefixClass} />
               </div>
               <p className="text-xs font-medium text-[#46b8c3] mt-2 pl-1">{fmtLakhs(monthlySalary * 12)}/yr</p>
             </div>
           ) : assessmentMethod === 'itr' ? (
             <>
               <div>
-                <label className={labelClass}>
-                  <IndianRupee className="w-3.5 h-3.5" /> Revenue (FY1)
-                </label>
+                <label className={labelClass}>Revenue (FY1)</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">₹</span>
-                  <input type="number" value={itrRevY1} onChange={(e) => setItrRevY1(Number(e.target.value))} className={inputWithPrefixClass} />
+                  <input type="text" inputMode="numeric" value={fmtIndian(itrRevY1)} onChange={(e) => setItrRevY1(parseIndian(e.target.value))} className={inputWithPrefixClass} />
                 </div>
                 <p className="text-xs font-medium text-slate-400 mt-2 pl-1">Profit: {fmtLakhs(itrProfitY1)}</p>
               </div>
               <div>
-                <label className={labelClass}>
-                  <Coins className="w-3.5 h-3.5" /> Expenses (FY1)
-                </label>
+                <label className={labelClass}>Expenses (FY1)</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">₹</span>
-                  <input type="number" value={itrExpY1} onChange={(e) => setItrExpY1(Number(e.target.value))} className={inputWithPrefixClass} />
+                  <input type="text" inputMode="numeric" value={fmtIndian(itrExpY1)} onChange={(e) => setItrExpY1(parseIndian(e.target.value))} className={inputWithPrefixClass} />
                 </div>
                 <p className="text-xs font-medium mt-2 pl-1 invisible">&nbsp;</p>
               </div>
               <div>
-                <label className={labelClass}>
-                  <IndianRupee className="w-3.5 h-3.5" /> Revenue (FY2)
-                </label>
+                <label className={labelClass}>Revenue (FY2)</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">₹</span>
-                  <input type="number" value={itrRevY2} onChange={(e) => setItrRevY2(Number(e.target.value))} className={inputWithPrefixClass} />
+                  <input type="text" inputMode="numeric" value={fmtIndian(itrRevY2)} onChange={(e) => setItrRevY2(parseIndian(e.target.value))} className={inputWithPrefixClass} />
                 </div>
                 <p className="text-xs font-medium text-slate-400 mt-2 pl-1">Profit: {fmtLakhs(itrProfitY2)}</p>
               </div>
               <div>
-                <label className={labelClass}>
-                  <Coins className="w-3.5 h-3.5" /> Expenses (FY2)
-                </label>
+                <label className={labelClass}>Expenses (FY2)</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">₹</span>
-                  <input type="number" value={itrExpY2} onChange={(e) => setItrExpY2(Number(e.target.value))} className={inputWithPrefixClass} />
+                  <input type="text" inputMode="numeric" value={fmtIndian(itrExpY2)} onChange={(e) => setItrExpY2(parseIndian(e.target.value))} className={inputWithPrefixClass} />
                 </div>
                 <p className="text-xs font-medium text-[#46b8c3] mt-2 pl-1">Avg: {fmtLakhs(itrAvgProfit)}/yr → {fmt(itrMonthlyIncome)}/mo</p>
               </div>
@@ -312,19 +361,15 @@ const AmountCalc = () => {
           ) : assessmentMethod === 'gst-turnover' ? (
             <>
               <div>
-                <label className={labelClass}>
-                  <IndianRupee className="w-3.5 h-3.5" /> Annual GST Sales
-                </label>
+                <label className={labelClass}>Annual GST Sales</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">₹</span>
-                  <input type="number" value={gstAnnualSales} onChange={(e) => setGstAnnualSales(Number(e.target.value))} className={inputWithPrefixClass} />
+                  <input type="text" inputMode="numeric" value={fmtIndian(gstAnnualSales)} onChange={(e) => setGstAnnualSales(parseIndian(e.target.value))} className={inputWithPrefixClass} />
                 </div>
                 <p className="text-xs font-medium text-[#46b8c3] mt-2 pl-1">{fmtLakhs(gstAnnualSales)}</p>
               </div>
               <div>
-                <label className={labelClass}>
-                  <Percent className="w-3.5 h-3.5" /> Turnover Factor
-                </label>
+                <label className={labelClass}>Turnover Factor</label>
                 <div className="relative">
                   <input type="number" value={turnoverFactor} onChange={(e) => setTurnoverFactor(Number(e.target.value))} min={10} max={15} className={inputClass} />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">%</span>
@@ -336,19 +381,15 @@ const AmountCalc = () => {
             /* ADB */
             <>
               <div>
-                <label className={labelClass}>
-                  <IndianRupee className="w-3.5 h-3.5" /> Avg Bank Balance
-                </label>
+                <label className={labelClass}>Avg Bank Balance</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">₹</span>
-                  <input type="number" value={avgBankBalance} onChange={(e) => setAvgBankBalance(Number(e.target.value))} className={inputWithPrefixClass} />
+                  <input type="text" inputMode="numeric" value={fmtIndian(avgBankBalance)} onChange={(e) => setAvgBankBalance(parseIndian(e.target.value))} className={inputWithPrefixClass} />
                 </div>
                 <p className="text-xs font-medium text-[#46b8c3] mt-2 pl-1">{fmtLakhs(avgBankBalance)}</p>
               </div>
               <div>
-                <label className={labelClass}>
-                  <Percent className="w-3.5 h-3.5" /> ADB Factor
-                </label>
+                <label className={labelClass}>ADB Factor</label>
                 <div className="relative">
                   <input type="number" value={adbFactor} onChange={(e) => setAdbFactor(Number(e.target.value))} min={25} max={30} className={inputClass} />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">%</span>
@@ -361,9 +402,7 @@ const AmountCalc = () => {
           {/* Recognition Rate — non-salaried only, inline in the grid */}
           {employment !== 'salaried' && (
             <div>
-              <label className={labelClass}>
-                <Percent className="w-3.5 h-3.5" /> Recognition Rate
-              </label>
+              <label className={labelClass}>Recognition Rate</label>
               <div className="relative">
                 <input type="number" value={recognitionRate} onChange={(e) => setRecognitionRate(Number(e.target.value))} min={50} max={100} className={inputClass} />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">%</span>
@@ -374,9 +413,7 @@ const AmountCalc = () => {
 
           {/* Age */}
           <div>
-            <label className={labelClass}>
-              <Calendar className="w-3.5 h-3.5" /> Age
-            </label>
+            <label className={labelClass}>Age</label>
             <div className="relative">
               <input type="number" value={age} onChange={(e) => setAge(Number(e.target.value))} min={21} max={65} className={inputClass} />
               <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">yrs</span>
@@ -390,17 +427,15 @@ const AmountCalc = () => {
 
           {/* CIBIL Score */}
           <div>
-            <label className={labelClass}>
-              <CheckCircle2 className="w-3.5 h-3.5" /> CIBIL Score
-            </label>
+            <label className={labelClass}>CIBIL Score</label>
             <input type="number" value={cibil} onChange={(e) => setCibil(Number(e.target.value))} min={300} max={900} className={inputClass} />
             <p className={cn("text-xs font-medium mt-2 pl-1", cibilAdj.color)}>{cibilAdj.label}</p>
           </div>
 
           {/* Interest Rate — auto from CIBIL */}
           <div>
-            <label className={labelClass}>
-              <Percent className="w-3.5 h-3.5" /> Interest Rate
+            <label className="text-sm font-semibold text-slate-400 uppercase tracking-[0.2em] mb-1.5 flex items-center">
+              Interest Rate
               <button
                 onClick={() => setRateOverride(p => !p)}
                 className={cn(
@@ -417,7 +452,7 @@ const AmountCalc = () => {
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">%</span>
               </div>
             ) : (
-              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-3.5">
+              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-2 border border-slate-200">
                 {cibilRate.rate}%
                 <span className="text-slate-400 font-normal text-sm ml-1">({cibilRate.band})</span>
               </div>
@@ -427,36 +462,30 @@ const AmountCalc = () => {
 
           {/* Existing Obligations */}
           <div>
-            <label className={labelClass}>
-              <Coins className="w-3.5 h-3.5" /> Existing EMIs
-            </label>
+            <label className={labelClass}>Existing EMIs</label>
             <div className="relative">
               <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">₹</span>
-              <input type="number" value={obligations} onChange={(e) => setObligations(Number(e.target.value))} className={inputWithPrefixClass} />
+              <input type="text" inputMode="numeric" value={fmtIndian(obligations)} onChange={(e) => setObligations(parseIndian(e.target.value))} className={inputWithPrefixClass} />
             </div>
             <p className="text-xs font-medium mt-2 pl-1 invisible">&nbsp;</p>
           </div>
 
           {/* Property Value */}
           <div>
-            <label className={labelClass}>
-              <PiggyBank className="w-3.5 h-3.5" /> Property Value
-            </label>
+            <label className={labelClass}>Property Value</label>
             <div className="relative">
               <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">₹</span>
-              <input type="number" value={propertyValue} onChange={(e) => setPropertyValue(Number(e.target.value))} className={inputWithPrefixClass} />
+              <input type="text" inputMode="numeric" value={fmtIndian(propertyValue)} onChange={(e) => setPropertyValue(parseIndian(e.target.value))} className={inputWithPrefixClass} />
             </div>
             <p className="text-xs font-medium text-[#46b8c3] mt-2 pl-1">{fmtLakhs(propertyValue)}</p>
           </div>
 
           {/* Loan Applied */}
           <div>
-            <label className={labelClass}>
-              <IndianRupee className="w-3.5 h-3.5" /> Loan Applied For
-            </label>
+            <label className={labelClass}>Loan Applied For</label>
             <div className="relative">
               <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">₹</span>
-              <input type="number" value={loanApplied} onChange={(e) => setLoanApplied(Number(e.target.value))} className={inputWithPrefixClass} />
+              <input type="text" inputMode="numeric" value={fmtIndian(loanApplied)} onChange={(e) => setLoanApplied(parseIndian(e.target.value))} className={inputWithPrefixClass} />
             </div>
             <p className={cn("text-xs font-medium mt-2 pl-1", loanApplied > propertyValue ? 'text-red-500' : 'text-[#46b8c3]')}>
               {loanApplied > propertyValue ? `Exceeds property value (${fmtLakhs(propertyValue)})` : fmtLakhs(loanApplied)}
@@ -465,8 +494,8 @@ const AmountCalc = () => {
 
           {/* FOIR */}
           <div>
-            <label className={labelClass}>
-              <Percent className="w-3.5 h-3.5" /> FOIR
+            <label className="text-sm font-semibold text-slate-400 uppercase tracking-[0.2em] mb-1.5 flex items-center">
+              FOIR
               <button
                 onClick={() => setFoirOverride(p => !p)}
                 className={cn(
@@ -483,13 +512,46 @@ const AmountCalc = () => {
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-sm">%</span>
               </div>
             ) : (
-              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-3.5">
+              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-2 border border-slate-200">
                 {(displaySlabFOIR * 100).toFixed(0)}%
                 <span className="text-slate-400 font-normal text-sm ml-1">(auto{employment === 'self-employed' ? ', SE −5%' : ''})</span>
               </div>
             )}
             <p className="text-xs font-medium mt-2 pl-1 invisible">&nbsp;</p>
           </div>
+        </div>{/* end grid */}
+
+            </motion.div>
+          </AnimatePresence>
+        </div>{/* end overflow-hidden */}
+
+        {/* ── NAV BUTTONS ── */}
+        <div className="flex items-center justify-between mt-6 pt-5 border-t border-slate-100">
+          <button
+            onClick={goBack}
+            disabled={step === 1}
+            className={cn(
+              'flex items-center gap-2 px-5 py-2.5 rounded-2xl border text-sm font-semibold transition-all',
+              step === 1
+                ? 'border-slate-100 text-slate-300 cursor-not-allowed'
+                : 'border-slate-200 text-slate-500 hover:border-[#144d78] hover:text-[#144d78]'
+            )}
+          >
+            <ArrowLeft className="w-4 h-4" /> Back
+          </button>
+
+          {step < STEPS.length ? (
+            <button
+              onClick={goNext}
+              className="flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-[#144d78] text-white text-sm font-semibold hover:bg-[#1b6896] transition-all"
+            >
+              Next <ArrowRight className="w-4 h-4" />
+            </button>
+          ) : (
+            <div className="flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-[#46b8c3]/10 text-[#1b6896] text-sm font-semibold">
+              <CheckCircle2 className="w-4 h-4" /> Results below ↓
+            </div>
+          )}
         </div>
       </motion.div>
 
@@ -538,10 +600,8 @@ const AmountCalc = () => {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             <motion.div variants={staggerItem}>
-              <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <Percent className="w-3.5 h-3.5" /> FOIR Applied
-              </label>
-              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-3.5">
+              <label className="text-sm font-semibold text-slate-400 uppercase tracking-[0.2em] mb-1.5 block">FOIR Applied</label>
+              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-2 border border-slate-200">
                 {(results.foirRate * 100).toFixed(0)}%
                 <span className="text-slate-400 font-normal text-sm ml-1">
                   {employment === 'self-employed' ? '(SE −5%)' : employment === 'salaried' ? '(salaried)' : '(slab)'}
@@ -549,26 +609,20 @@ const AmountCalc = () => {
               </div>
             </motion.div>
             <motion.div variants={staggerItem}>
-              <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <IndianRupee className="w-3.5 h-3.5" /> Net EMI Capacity
-              </label>
-              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-3.5">
+              <label className="text-sm font-semibold text-slate-400 uppercase tracking-[0.2em] mb-1.5 block">Net EMI Capacity</label>
+              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-2 border border-slate-200">
                 {fmt(results.netEMI)}
               </div>
             </motion.div>
             <motion.div variants={staggerItem}>
-              <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5" /> Max Tenure
-              </label>
-              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-3.5">
+              <label className="text-sm font-semibold text-slate-400 uppercase tracking-[0.2em] mb-1.5 block">Max Tenure</label>
+              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-2 border border-slate-200">
                 {results.tenureYears} Years
               </div>
             </motion.div>
             <motion.div variants={staggerItem}>
-              <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <TrendingDown className="w-3.5 h-3.5" /> Effective Rate
-              </label>
-              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-3.5">
+              <label className="text-sm font-semibold text-slate-400 uppercase tracking-[0.2em] mb-1.5 block">Effective Rate</label>
+              <div className="w-full text-lg font-bold text-[#144d78] bg-[#144d78]/[0.03] rounded-2xl px-4 py-2 border border-slate-200">
                 {results.effectiveRate.toFixed(2)}%
                 {results.ltvPremium !== 0 && (
                   <span className={cn("text-sm font-normal ml-1", results.ltvPremium > 0 ? 'text-amber-500' : 'text-green-500')}>
@@ -861,7 +915,7 @@ const AmountCalc = () => {
           <ScrollFadeIn className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden mb-12">
             <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-[#46b8c3]/15 flex items-center justify-center">
-                <Briefcase className="w-4 h-4 text-[#1b6896]" />
+                <CheckCircle2 className="w-4 h-4 text-[#1b6896]" />
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-[#0d3a5c]">Reference Tables</h3>

@@ -11,7 +11,7 @@ import { ArrowDown, ArrowRight, Calendar, CheckCircle2, Clock, Coins, IndianRupe
 import { motion, AnimatePresence, useInView } from 'motion/react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import AmountCalc from './AmountCalc';
+import AmountCalc from './AmountCalcFlow';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -147,8 +147,28 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#fafafa] text-[#0d3a5c] font-['Poppins',sans-serif] selection:bg-[#46b8c3]/30 pb-20">
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="pt-8">
-          <h1 className="text-3xl font-bold tracking-tight text-[#0d3a5c]">Savings on Rate Reduction</h1>
+        <div className="sticky top-0 z-50 bg-[#fafafa]/80 backdrop-blur-md pt-4 pb-2">
+          <div className="inline-flex rounded-2xl bg-slate-200/60 p-1">
+            {([['refinance', 'Refinancing'], ['amount', 'Amount Calculator']] as const).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setActiveCalculator(key)}
+                className={cn(
+                  'px-5 py-2 rounded-xl text-sm font-semibold transition-all',
+                  activeCalculator === key
+                    ? 'bg-[#144d78] text-white shadow-sm'
+                    : 'text-slate-500 hover:text-[#144d78]'
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="pt-4">
+          <h1 className="text-3xl font-bold tracking-tight text-[#0d3a5c]">
+            {activeCalculator === 'refinance' ? 'Savings on Rate Reduction' : 'Loan Eligibility Calculator'}
+          </h1>
         </div>
         {activeCalculator === 'refinance' ? (
           <>
