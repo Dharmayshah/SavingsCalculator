@@ -308,7 +308,7 @@ export default function App() {
           <div className="absolute left-0 bottom-0 w-48 h-48 bg-[#46b8c3]/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
           
           <p className="text-2xl md:text-3xl font-medium tracking-tight text-white/90 relative z-10">
-            A <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#46b8c3] to-[#8edce4] font-extrabold">{(currentRate - newRate).toFixed(0)}%</span> Interest Rate Cut =
+            A <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#46b8c3] to-[#8edce4] font-extrabold">{parseFloat((currentRate - newRate).toFixed(2))}%</span> Interest Rate Cut =
           </p>
           
           <p className="text-5xl md:text-7xl font-extrabold tracking-tight relative z-10 mt-2">
