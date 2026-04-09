@@ -471,14 +471,14 @@ export default function App() {
                       }}
                     />
                     <Legend iconType="circle" wrapperStyle={{ fontSize: '13px', paddingTop: '20px', fontWeight: 500, fontFamily: 'Poppins' }}
-                      formatter={(value: string) => <span style={{ color: value === 'Principal' ? '#0d3a5c' : value === 'Interest' ? '#1b6896' : '#46b8c3' }}>{value}</span>}
+                      formatter={(value: string) => <span style={{ color: value === 'Principal' ? '#e2e8f0' : value === 'Interest' ? '#93c5e1' : '#1b6896' }}>{value}</span>}
                       payload={[
-                        { value: 'Principal', type: 'circle', color: '#0d3a5c' },
-                        { value: 'Interest', type: 'circle', color: '#1b6896' },
-                        { value: 'You Save', type: 'circle', color: '#46b8c3' },
+                        { value: 'Principal', type: 'circle', color: '#e2e8f0' },
+                        { value: 'Interest', type: 'circle', color: '#93c5e1' },
+                        { value: 'You Save', type: 'circle', color: '#1b6896' },
                       ]}
                     />
-                    <Bar dataKey="Principal" name="Principal" stackId="a" fill="#0d3a5c" radius={[0, 0, 8, 8]}
+                    <Bar dataKey="Principal" name="Principal" stackId="a" fill="#e2e8f0" radius={[0, 0, 8, 8]}
                       label={({ x, y, width, height, index }: any) => {
                         const d = barChartData[index];
                         if (d.Saved <= 0) return null;
@@ -491,12 +491,12 @@ export default function App() {
                         );
                       }}
                     />
-                    <Bar dataKey="Interest" name="Interest" stackId="a" fill="#1b6896">
+                    <Bar dataKey="Interest" name="Interest" stackId="a" fill="#93c5e1">
                       {barChartData.map((d, index) => (
                         <Cell key={`interest-${index}`} radius={d.Saved <= 0 ? [8, 8, 0, 0] : [0, 0, 0, 0]} />
                       ))}
                     </Bar>
-                    <Bar dataKey="Saved" name="You Save" stackId="a" fill="#46b8c3" radius={[8, 8, 0, 0]} />
+                    <Bar dataKey="Saved" name="You Save" stackId="a" fill="#1b6896" radius={[8, 8, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
