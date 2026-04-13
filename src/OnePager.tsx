@@ -69,10 +69,10 @@ function StickyNav({ activeSection }: { activeSection: string }) {
             <a
               key={link.id}
               href={`#${link.id}`}
-              className={`text-base font-medium transition-colors ${
+              className={`text-lg font-semibold transition-colors ${
                 activeSection === link.id
                   ? 'text-[#144d78]'
-                  : 'text-[#0d3a5c]/70 hover:text-[#144d78]'
+                  : 'text-slate-400 hover:text-[#144d78]'
               }`}
               style={{ letterSpacing: '0.01em' }}
             >
@@ -185,7 +185,7 @@ function HeroSection({ heroRef }: { heroRef: React.RefObject<HTMLDivElement | nu
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1
           ref={textRef}
-          className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-4 relative z-10"
+          className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.4] mb-6 relative z-10"
           style={{
             backgroundImage: 'radial-gradient(circle 600px at 50% 50%, #144d78, #46b8c3)',
             WebkitBackgroundClip: 'text',
@@ -245,6 +245,8 @@ export default function OnePager() {
   const [currentRate, setCurrentRate] = useState('8');
   const [sanctionDate, setSanctionDate] = useState('');
   const [originalTenure, setOriginalTenure] = useState('20');
+  const [cibilScore, setCibilScore] = useState('');
+  const [obligations, setObligations] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   // Auto-calculate remaining tenure from sanction date + original tenure
@@ -309,12 +311,12 @@ export default function OnePager() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ name, phone, email, bank, loanAmount, currentRate, sanctionDate, originalTenure, remainingTenure });
+    console.log({ name, phone, email, bank, loanAmount, currentRate, sanctionDate, originalTenure, remainingTenure, cibilScore, obligations });
     setSubmitted(true);
   };
 
   const inputClass =
-    'w-full rounded-2xl border border-slate-200 bg-[#144d78]/[0.03] px-4 py-2 text-lg font-bold text-[#144d78] outline-none transition-all focus:border-[#46b8c3] focus:bg-white placeholder:text-slate-400 placeholder:font-normal placeholder:text-base';
+    'w-full rounded-2xl border border-slate-200 bg-[#144d78]/[0.03] px-4 py-3 text-lg font-bold text-[#144d78] outline-none transition-all focus:border-[#46b8c3] focus:bg-white placeholder:text-slate-400 placeholder:font-normal placeholder:text-base';
 
   return (
     <div className="min-h-screen bg-[#fafafa] text-[#0d3a5c] font-['Poppins',sans-serif] selection:bg-[#46b8c3]/30">
@@ -338,9 +340,9 @@ export default function OnePager() {
       <section ref={availRef} id="avail" className="scroll-mt-14">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-12">
           <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-            <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50">
+            <div className="px-8 py-6 border-b border-[#46b8c3]/20 bg-[#46b8c3]/10">
               <h3 className="text-2xl font-bold text-[#0d3a5c]">Let Us Handle the Paperwork</h3>
-              <p className="text-base text-slate-500 mt-1">We’ll assess your eligibility, prepare the documentation, and coordinate with your bank.</p>
+              <p className="text-base text-slate-400 font-medium mt-1">We’ll assess your eligibility, prepare the documentation, and coordinate with your bank.</p>
             </div>
 
           <AnimatePresence mode="wait">
@@ -359,175 +361,193 @@ export default function OnePager() {
                 onSubmit={handleSubmit}
               >
                 <div className="relative bg-white rounded-3xl">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden">
-                    {/* Left — Contact Info */}
-                    <div className="p-8 border-b lg:border-b-0 lg:border-r border-slate-100">
-                      <div className="space-y-4">
-                        <div>
-                          <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                            Full Name
-                          </label>
-                          <div className="relative">
-                            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">✉</span>
-                            <input
-                              type="text"
-                              required
-                              value={name}
-                              onChange={(e) => setName(e.target.value)}
-                              placeholder="Your name"
-                              className={`${inputClass} pl-10`}
-                            />
-                          </div>
+                  <div className="p-6">
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                      <div>
+                        <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+                          Full Name
+                        </label>
+                        <div className="relative">
+                          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">✉</span>
+                          <input
+                            type="text"
+                            required
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Your name"
+                            className={`${inputClass} pl-10`}
+                          />
                         </div>
-                        <div>
-                          <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                            Phone Number
-                          </label>
-                          <div className="relative">
-                            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">+91</span>
-                            <input
-                              type="tel"
-                              required
-                              value={phone}
-                              onChange={(e) => setPhone(e.target.value)}
-                              placeholder="XXXXX XXXXX"
-                              className={`${inputClass} pl-12`}
-                            />
-                          </div>
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+                          Phone Number
+                        </label>
+                        <div className="relative">
+                          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">+91</span>
+                          <input
+                            type="tel"
+                            required
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            placeholder="XXXXX XXXXX"
+                            className={`${inputClass} pl-12`}
+                          />
                         </div>
-                        <div>
-                          <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                            Email
-                          </label>
-                          <div className="relative">
-                            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">@</span>
-                            <input
-                              type="email"
-                              required
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                              placeholder="you@email.com"
-                              className={`${inputClass} pl-10`}
-                            />
-                          </div>
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+                          Email
+                        </label>
+                        <div className="relative">
+                          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">@</span>
+                          <input
+                            type="email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="you@email.com"
+                            className={`${inputClass} pl-10`}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+                          Current Bank
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={bank}
+                            onChange={(e) => setBank(e.target.value)}
+                            placeholder="e.g. SBI, HDFC, ICICI"
+                            className={inputClass}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+                          Loan Amount
+                        </label>
+                        <div className="relative">
+                          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">₹</span>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            value={loanAmount}
+                            onChange={(e) => setLoanAmount(e.target.value.replace(/[^0-9,]/g, ''))}
+                            className={`${inputClass} pl-8`}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+                          Current Rate
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            value={currentRate}
+                            onChange={(e) => setCurrentRate(e.target.value.replace(/[^0-9.]/g, ''))}
+                            className={`${inputClass} pr-10`}
+                          />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">%</span>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+                          Sanction Date
+                        </label>
+                        <div className="relative">
+                          <CalendarDays className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1b6896]/40 pointer-events-none" />
+                          <input
+                            type="date"
+                            value={sanctionDate}
+                            onChange={(e) => setSanctionDate(e.target.value)}
+                            max={new Date().toISOString().split('T')[0]}
+                            className={`${inputClass} pl-10`}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+                          Original Tenure
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            value={originalTenure}
+                            onChange={(e) => setOriginalTenure(e.target.value.replace(/[^0-9]/g, ''))}
+                            className={`${inputClass} pr-14`}
+                          />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">years</span>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+                          CIBIL Score
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            value={cibilScore}
+                            onChange={(e) => setCibilScore(e.target.value.replace(/[^0-9]/g, ''))}
+                            placeholder="e.g. 750"
+                            className={inputClass}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+                          Existing EMI Obligations
+                        </label>
+                        <div className="relative">
+                          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">₹</span>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            value={obligations}
+                            onChange={(e) => setObligations(e.target.value.replace(/[^0-9,]/g, ''))}
+                            placeholder="Monthly total"
+                            className={`${inputClass} pl-8`}
+                          />
                         </div>
                       </div>
                     </div>
 
-                    {/* Right — Loan Snapshot */}
-                    <div className="p-8">
-                      <div className="space-y-4">
-                        <div>
-                          <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                            Current Bank
-                          </label>
-                          <div className="relative">
-                            <input
-                              type="text"
-                              value={bank}
-                              onChange={(e) => setBank(e.target.value)}
-                              placeholder="e.g. SBI, HDFC, ICICI"
-                              className={inputClass}
-                            />
+                    {/* Remaining Tenure — auto-calculated */}
+                    {remainingTenure && (
+                      <div className="rounded-2xl border border-dashed border-[#46b8c3]/30 bg-[#46b8c3]/[0.04] px-4 py-3 mt-3">
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-2">
+                            <Timer className="w-4 h-4 text-[#46b8c3]" />
+                            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Remaining Tenure</span>
                           </div>
+                          {remainingTenure.elapsed ? (
+                            <span className="text-sm font-bold text-red-500">Loan tenure completed</span>
+                          ) : (
+                            <span className="text-base font-bold text-[#144d78]">
+                              {remainingTenure.years > 0 && <>{remainingTenure.years}<span className="text-sm font-semibold text-slate-400"> yr </span></>}
+                              {remainingTenure.months}<span className="text-sm font-semibold text-slate-400"> mo</span>
+                            </span>
+                          )}
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                              Loan Amount
-                            </label>
-                            <div className="relative">
-                              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">₹</span>
-                              <input
-                                type="text"
-                                inputMode="numeric"
-                                value={loanAmount}
-                                onChange={(e) => setLoanAmount(e.target.value.replace(/[^0-9,]/g, ''))}
-                                className={`${inputClass} pl-8`}
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                              Current Rate
-                            </label>
-                            <div className="relative">
-                              <input
-                                type="text"
-                                inputMode="decimal"
-                                value={currentRate}
-                                onChange={(e) => setCurrentRate(e.target.value.replace(/[^0-9.]/g, ''))}
-                                className={`${inputClass} pr-10`}
-                              />
-                              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">%</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                              Sanction Date
-                            </label>
-                            <div className="relative">
-                              <CalendarDays className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1b6896]/40 pointer-events-none" />
-                              <input
-                                type="date"
-                                value={sanctionDate}
-                                onChange={(e) => setSanctionDate(e.target.value)}
-                                max={new Date().toISOString().split('T')[0]}
-                                className={`${inputClass} pl-10`}
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <label className="mb-1.5 block text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                              Original Tenure
-                            </label>
-                            <div className="relative">
-                              <input
-                                type="text"
-                                inputMode="numeric"
-                                value={originalTenure}
-                                onChange={(e) => setOriginalTenure(e.target.value.replace(/[^0-9]/g, ''))}
-                                className={`${inputClass} pr-14`}
-                              />
-                              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">years</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Remaining Tenure — auto-calculated */}
-                        {remainingTenure && (
-                          <div className="rounded-2xl border border-dashed border-[#46b8c3]/30 bg-[#46b8c3]/[0.04] px-4 py-3">
-                            <div className="flex items-center justify-between gap-3">
-                              <div className="flex items-center gap-2">
-                                <Timer className="w-4 h-4 text-[#46b8c3]" />
-                                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Remaining Tenure</span>
-                              </div>
-                              {remainingTenure.elapsed ? (
-                                <span className="text-sm font-bold text-red-500">Loan tenure completed</span>
-                              ) : (
-                                <span className="text-base font-bold text-[#144d78]">
-                                  {remainingTenure.years > 0 && <>{remainingTenure.years}<span className="text-sm font-semibold text-slate-400"> yr </span></>}
-                                  {remainingTenure.months}<span className="text-sm font-semibold text-slate-400"> mo</span>
-                                </span>
-                              )}
-                            </div>
-                            {!remainingTenure.elapsed && remainingTenure.elapsedYears !== undefined && (
-                              <p className="text-xs text-slate-400 mt-1 pl-6">
-                                {remainingTenure.elapsedYears > 0 && `${remainingTenure.elapsedYears}y `}{remainingTenure.elapsedRemainingMonths}m elapsed · {remainingTenure.totalMonths} months remaining
-                              </p>
-                            )}
-                          </div>
+                        {!remainingTenure.elapsed && remainingTenure.elapsedYears !== undefined && (
+                          <p className="text-xs text-slate-400 mt-1 pl-6">
+                            {remainingTenure.elapsedYears > 0 && `${remainingTenure.elapsedYears}y `}{remainingTenure.elapsedRemainingMonths}m elapsed · {remainingTenure.totalMonths} months remaining
+                          </p>
                         )}
                       </div>
-                    </div>
+                    )}
                   </div>
 
                   {/* Submit */}
-                  <div className="px-8 py-6 bg-slate-50/50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="px-8 py-6 bg-[#46b8c3]/10 border-t border-[#46b8c3]/20 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-xs text-slate-500 max-w-sm">
-                      Our consultation is free. Rate resets involve a bank conversion fee (typically 0.25–0.5% of outstanding) and signing a supplementary loan agreement.
+                      Our consultation is free. Rate resets involve a bank conversion fee (typically 0.25 to 0.5% of outstanding) and signing a supplementary loan agreement.
                     </p>
                     <button
                       type="submit"
@@ -551,12 +571,12 @@ export default function OnePager() {
       <section id="how-it-works" ref={howRef} className="scroll-mt-14">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-12">
           <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-            <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50">
+            <div className="px-8 py-6 border-b border-[#46b8c3]/20 bg-[#46b8c3]/10">
               <h3 className="text-2xl font-bold text-[#0d3a5c]">How It Works</h3>
-              <p className="text-base text-slate-500 mt-1">A straightforward process — no surprises.</p>
+              <p className="text-base text-slate-400 font-medium mt-1">A straightforward process — no surprises.</p>
             </div>
 
-            <div className="p-8">
+            <div className="p-6">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mb-6">
             {[
               { step: '1', label: 'Check Savings', desc: 'Run the calculator to see your potential savings from a rate drop.' },
@@ -566,9 +586,9 @@ export default function OnePager() {
             ].map(({ step, label, desc }, i) => (
               <div
                 key={step}
-                className="relative rounded-2xl bg-slate-50/50 px-4 py-6 text-center transition-colors"
+                className="relative rounded-2xl bg-[#144d78]/[0.03] px-4 py-6 text-center transition-colors"
               >
-                <div className="w-9 h-9 rounded-full bg-[#144d78] text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">
+                <div className="w-9 h-9 rounded-full bg-[#46b8c3] text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">
                   {step}
                 </div>
                 <p className="text-sm font-bold text-[#0d3a5c] mb-2">{label}</p>
@@ -580,7 +600,7 @@ export default function OnePager() {
             ))}
           </div>
           <p className="text-xs text-slate-500 text-center max-w-lg mx-auto">
-            Our consultation is free. Rate resets typically involve a bank conversion fee (0.25–0.5% of outstanding principal) and a supplementary agreement with your lender.
+            Our consultation is free. Rate resets typically involve a bank conversion fee (0.25 to 0.5% of outstanding principal) and a supplementary agreement with your lender.
           </p>
             </div>
           </div>
@@ -593,7 +613,7 @@ export default function OnePager() {
       <footer id="footer" ref={footerRef} className="scroll-mt-14 bg-[#0d3a5c] text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Left — Brand + Links */}
+            {/* Left — Brand + Contact */}
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#1b6896] to-[#46b8c3] flex items-center justify-center">
@@ -601,9 +621,24 @@ export default function OnePager() {
                 </div>
                 <span className="text-lg font-bold">RateReset</span>
               </div>
-              <p className="text-sm text-white/50 max-w-sm mb-8 leading-relaxed">
+              <p className="text-sm text-white/50 max-w-sm mb-6 leading-relaxed">
                 We help you get a lower interest rate on your existing home loan. Our consultation is free — bank conversion fees and supplementary agreement apply.
               </p>
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-white/40 mb-3">Contact</h3>
+              <div className="space-y-2.5 mb-6">
+                <div className="flex items-start gap-3">
+                  <Building2 className="w-4 h-4 text-white/40 mt-0.5 shrink-0" />
+                  <p className="text-sm text-white/50 leading-relaxed">A-306, The First, B/S Keshavbaug Party Plot, Vastrapur, Ahmedabad</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Mail className="w-4 h-4 text-white/40 shrink-0" />
+                  <a href="mailto:info@finsagex.com" className="text-sm text-white/50 hover:text-[#46b8c3] transition-colors">info@finsagex.com</a>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="w-4 h-4 text-white/40 shrink-0" />
+                  <a href="tel:+918511083170" className="text-sm text-white/50 hover:text-[#46b8c3] transition-colors">+91 8511083170</a>
+                </div>
+              </div>
               <a
                 href="https://www.linkedin.com/company/askbirbal"
                 target="_blank"

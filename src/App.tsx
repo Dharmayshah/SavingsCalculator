@@ -181,9 +181,9 @@ export default function App() {
               className="bg-white rounded-3xl border border-slate-200 shadow-sm mt-6 mb-8 overflow-hidden"
             >
 
-          <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50">
+          <div className="px-8 py-6 border-b border-[#46b8c3]/20 bg-[#46b8c3]/10">
             <h3 className="text-2xl font-bold text-[#0d3a5c]">See How Much You Could Save</h3>
-            <p className="text-base text-slate-500 mt-1">Enter your current loan details and explore the impact of a rate reduction.</p>
+            <p className="text-base text-slate-400 font-medium mt-1">Enter your current loan details and explore the impact of a rate reduction.</p>
           </div>
 
           <div className="p-6">
@@ -203,7 +203,7 @@ export default function App() {
                   value={principalStr}
                   onChange={(e) => setPrincipalStr(e.target.value.replace(/[^0-9,]/g, ''))}
                   onBlur={() => setPrincipalStr(formatIndianNumber(principal))}
-                  className="w-full rounded-2xl border border-slate-200 bg-[#144d78]/[0.03] py-2 pl-8 pr-4 text-lg font-bold text-[#144d78] outline-none transition-all focus:border-[#46b8c3] focus:bg-white"
+                  className="w-full rounded-2xl border border-slate-200 bg-[#144d78]/[0.03] py-3 pl-8 pr-4 text-lg font-bold text-[#144d78] outline-none transition-all focus:border-[#46b8c3] focus:bg-white"
                 />
               </div>
             </div>
@@ -219,7 +219,7 @@ export default function App() {
                   inputMode="numeric"
                   value={tenureStr}
                   onChange={(e) => setTenureStr(e.target.value.replace(/[^0-9]/g, ''))}
-                  className="w-full rounded-2xl border border-slate-200 bg-[#144d78]/[0.03] px-4 py-2 pr-14 text-lg font-bold text-[#144d78] outline-none transition-all focus:border-[#46b8c3] focus:bg-white"
+                  className="w-full rounded-2xl border border-slate-200 bg-[#144d78]/[0.03] px-4 py-3 pr-14 text-lg font-bold text-[#144d78] outline-none transition-all focus:border-[#46b8c3] focus:bg-white"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">years</span>
               </div>
@@ -238,7 +238,7 @@ export default function App() {
                   inputMode="decimal"
                   value={currentRateStr}
                   onChange={(e) => setCurrentRateStr(e.target.value.replace(/[^0-9.]/g, ''))}
-                  className="w-full rounded-2xl border border-slate-200 bg-[#144d78]/[0.03] px-4 py-2 pr-10 text-lg font-bold text-[#144d78] outline-none transition-all focus:border-[#46b8c3] focus:bg-white"
+                  className="w-full rounded-2xl border border-slate-200 bg-[#144d78]/[0.03] px-4 py-3 pr-10 text-lg font-bold text-[#144d78] outline-none transition-all focus:border-[#46b8c3] focus:bg-white"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">%</span>
               </div>
@@ -269,7 +269,7 @@ export default function App() {
                   inputMode="decimal"
                   value={newRateStr}
                   onChange={(e) => setNewRateStr(e.target.value.replace(/[^0-9.]/g, ''))}
-                  className="w-full rounded-2xl border border-[#46b8c3]/30 bg-[#46b8c3]/[0.06] px-4 py-2 pr-10 text-lg font-bold text-[#1b6896] outline-none transition-all focus:border-[#46b8c3] focus:bg-white"
+                  className="w-full rounded-2xl border border-[#46b8c3]/30 bg-[#46b8c3]/[0.06] px-4 py-3 pr-10 text-lg font-bold text-[#1b6896] outline-none transition-all focus:border-[#46b8c3] focus:bg-white"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1b6896]/40 font-semibold text-base">%</span>
               </div>
@@ -317,11 +317,11 @@ export default function App() {
           <div className="absolute left-0 bottom-0 w-48 h-48 bg-[#46b8c3]/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
           
           <p className="text-2xl md:text-3xl font-medium tracking-tight text-white/90 relative z-10">
-            A <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#46b8c3] to-[#8edce4] font-extrabold">{parseFloat((currentRate - newRate).toFixed(2))}%</span> Interest Rate Cut =
+            A <span className="text-[#46b8c3] font-extrabold">{parseFloat((currentRate - newRate).toFixed(2))}%</span> Interest Rate Cut =
           </p>
           
           <p className="text-5xl md:text-7xl font-extrabold tracking-tight relative z-10 mt-2">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#46b8c3] to-[#8edce4]">{formatLakhs(s2Savings)} Saved.</span>
+            <span className="text-[#46b8c3]">{formatLakhs(s2Savings)} Saved.</span>
           </p>
         </motion.div>
 
@@ -346,15 +346,15 @@ export default function App() {
             </div>
             
             <h3 className="text-2xl font-bold text-[#0d3a5c] mb-2 relative z-10">More Cash Monthly</h3>
-            <p className="text-base text-slate-500 mb-8 relative z-10">Keep your {tenureYears}-year timeline, but reduce your monthly out-of-pocket expense.</p>
+            <p className="text-base text-slate-400 font-medium mb-8 relative z-10">Keep your {tenureYears}-year timeline, but reduce your monthly out-of-pocket expense.</p>
             
             <div className="bg-gradient-to-br from-[#46b8c3]/15 to-[#46b8c3]/5 rounded-2xl p-6 mb-4 border border-[#46b8c3]/30 relative z-10">
-              <p className="text-base font-semibold text-[#144d78] uppercase tracking-wider mb-2">Total Saved</p>
+              <p className="text-sm font-semibold text-[#144d78] uppercase tracking-[0.2em] mb-2">Total Saved</p>
               <span className="text-4xl font-bold text-[#46b8c3] tracking-tight">{formatLakhs(s1Savings)}</span>
             </div>
 
             <div className="bg-[#46b8c3]/10 rounded-2xl p-6 mb-8 border border-[#46b8c3]/20 relative z-10">
-              <p className="text-base font-semibold text-[#144d78] uppercase tracking-wider mb-2">Monthly Savings</p>
+              <p className="text-sm font-semibold text-[#144d78] uppercase tracking-[0.2em] mb-2">Monthly Savings</p>
               <div className="flex items-end gap-2">
                 <span className="text-4xl font-bold text-[#46b8c3] tracking-tight">{formatCurrency(s1MonthlySavings)}</span>
                 <span className="text-base text-[#1b6896] font-medium mb-0.5">/ mo</span>
@@ -378,42 +378,44 @@ export default function App() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200 hover:shadow-lg transition-shadow duration-300 group relative overflow-hidden flex flex-col"
+            className="bg-gradient-to-br from-[#1b6896] to-[#2a85b5] rounded-3xl p-8 shadow-2xl border border-[#2a85b5] hover:shadow-lg transition-shadow duration-300 group relative overflow-hidden flex flex-col"
           >
+            <div className="absolute right-0 top-0 w-72 h-72 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+            <div className="absolute left-0 bottom-0 w-48 h-48 bg-[#46b8c3]/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
             <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-              <Zap className="w-32 h-32" />
+              <Zap className="w-32 h-32 text-white" />
             </div>
             
-            <div className="mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#46b8c3]/10 text-[#1b6896] text-base font-semibold">
+            <div className="mb-6 relative z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#46b8c3]/20 text-[#46b8c3] text-base font-semibold border border-[#46b8c3]/30">
                 Reduce Tenure Keeping EMI Same
               </div>
             </div>
             
-            <h3 className="text-2xl font-bold text-[#0d3a5c] mb-2 relative z-10">Debt-Free Faster</h3>
-            <p className="text-base text-slate-500 mb-8 relative z-10">Keep paying your current EMI amount, and watch your loan vanish years earlier.</p>
+            <h3 className="text-2xl font-bold text-white mb-2 relative z-10">Debt-Free Faster</h3>
+            <p className="text-base text-white/50 font-medium mb-8 relative z-10">Keep paying your current EMI amount, and watch your loan vanish years earlier.</p>
             
-            <div className="bg-gradient-to-br from-[#46b8c3]/15 to-[#46b8c3]/5 rounded-2xl p-6 mb-4 border border-[#46b8c3]/30 relative z-10">
-              <p className="text-base font-semibold text-[#144d78] uppercase tracking-wider mb-2">Total Saved</p>
+            <div className="bg-white/10 rounded-2xl p-6 mb-4 border border-white/10 relative z-10">
+              <p className="text-sm font-semibold text-white/60 uppercase tracking-[0.2em] mb-2">Total Saved</p>
               <span className="text-4xl font-bold text-[#46b8c3] tracking-tight">{formatLakhs(s2Savings)}</span>
             </div>
 
-            <div className="bg-[#46b8c3]/10 rounded-2xl p-6 mb-8 border border-[#46b8c3]/20 relative z-10">
-              <p className="text-base font-semibold text-[#144d78] uppercase tracking-wider mb-2">Time Saved</p>
+            <div className="bg-white/10 rounded-2xl p-6 mb-8 border border-white/10 relative z-10">
+              <p className="text-sm font-semibold text-white/60 uppercase tracking-[0.2em] mb-2">Time Saved</p>
               <div className="flex items-end gap-2">
                 <span className="text-4xl font-bold text-[#46b8c3] tracking-tight">{Math.floor(s2MonthsSaved / 12)}<span className="text-2xl">y</span> {s2MonthsSaved % 12}<span className="text-2xl">m</span></span>
-                <span className="text-base text-[#1b6896] font-medium mb-0.5">earlier</span>
+                <span className="text-base text-[#46b8c3] font-medium mb-0.5">earlier</span>
               </div>
             </div>
 
             <div className="space-y-4 mt-auto relative z-10">
-              <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                <span className="text-base text-slate-500 flex items-center gap-2"><IndianRupee className="w-5 h-5"/> EMI</span>
-                <span className="text-base font-semibold text-[#0d3a5c]">{formatCurrency(currentEmi)} <span className="text-slate-400 font-normal">(Same)</span></span>
+              <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                <span className="text-base text-white/50 flex items-center gap-2"><IndianRupee className="w-5 h-5"/> EMI</span>
+                <span className="text-base font-semibold text-white">{formatCurrency(currentEmi)} <span className="text-white/40 font-normal">(Same)</span></span>
               </div>
-              <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                <span className="text-base text-slate-500 flex items-center gap-2"><Clock className="w-5 h-5"/> Tenure</span>
-                <span className="text-base font-semibold text-[#0d3a5c]">{Math.floor(s2Months / 12)} Years {s2Months % 12} mo</span>
+              <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                <span className="text-base text-white/50 flex items-center gap-2"><Clock className="w-5 h-5"/> Tenure</span>
+                <span className="text-base font-semibold text-white">{Math.floor(s2Months / 12)} Years {s2Months % 12} mo</span>
               </div>
             </div>
           </motion.div>
@@ -510,11 +512,11 @@ export default function App() {
         </ScrollFadeIn>
         */}
         {/* RATE DROP SCENARIOS (0.25% Increments) */}
-        <ScrollFadeIn className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden mb-12">
-          <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
+        <ScrollFadeIn className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden mb-10">
+          <div className="px-8 py-6 border-b border-[#46b8c3]/20 bg-[#46b8c3]/10 flex items-center gap-3">
             <div>
               <h3 className="text-2xl font-bold text-[#0d3a5c]">Rate Drop Scenarios</h3>
-              <p className="text-base text-slate-500 mt-1">See how every 0.25% drop impacts your loan</p>
+              <p className="text-base text-slate-400 font-medium mt-1">See how every 0.25% drop impacts your loan</p>
             </div>
           </div>
 
@@ -564,12 +566,12 @@ export default function App() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[900px]">
               <thead>
-                <tr className="border-b border-slate-100 text-base text-slate-400 uppercase tracking-wider font-semibold">
+                <tr className="border-b border-slate-100 text-sm text-slate-400 uppercase tracking-[0.2em] font-semibold">
                   <th rowSpan={2} className="px-5 py-4 bg-slate-50/50 border-b border-slate-200 text-center align-bottom">Rate</th>
                   <th colSpan={3} className="px-5 py-3 text-center text-[#1b6896] bg-[#46b8c3]/10 border-l border-slate-100">Reduce EMI</th>
                   <th colSpan={3} className="px-5 py-3 text-center text-[#144d78] bg-[#1b6896]/10 border-l border-slate-100">Reduce Tenure</th>
                 </tr>
-                <tr className="border-b border-slate-200 text-base text-slate-400 uppercase tracking-wider font-semibold">
+                <tr className="border-b border-slate-200 text-sm text-slate-400 uppercase tracking-[0.2em] font-semibold">
                   <th className="px-5 py-2.5 text-center bg-[#46b8c3]/10 border-l border-slate-100">New EMI</th>
                   <th className="px-5 py-2.5 text-center bg-[#46b8c3]/10">Monthly Savings</th>
                   <th className="px-5 py-2.5 text-center bg-[#46b8c3]/10">Total Saved</th>
