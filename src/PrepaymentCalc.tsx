@@ -459,10 +459,11 @@ export default function PrepaymentCalc() {
               {Array.from({ length: 10 }, (_, i) => {
                 const factor = 0.75 + i * 0.05;
                 const varAmount = Math.round(prepaymentAmount * factor);
-                const varSchedule = generatePrepaymentAmortizationSchedule(principal, rate, emi, months, varAmount, frequencyDays, enableStepUp ? stepUpAmount : 0, stepUpFrequencyDays);
+                const varStepUp = enableStepUp ? Math.round(stepUpAmount * factor) : 0;
+                const varSchedule = generatePrepaymentAmortizationSchedule(principal, rate, emi, months, varAmount, frequencyDays, varStepUp, stepUpFrequencyDays);
                 const varTenureMonths = varSchedule.length > 0 ? varSchedule[varSchedule.length - 1].month : months;
                 const varTotalOut = varSchedule.length > 0 ? varSchedule[varSchedule.length - 1].totalEmis + varSchedule[varSchedule.length - 1].totalPrepayments : 0;
-                const varInvest = calculateInvestmentBreakEven(principal, rate, emi, months, varAmount, frequencyDays, enableStepUp ? stepUpAmount : 0, stepUpFrequencyDays, 12);
+                const varInvest = calculateInvestmentBreakEven(principal, rate, emi, months, varAmount, frequencyDays, varStepUp, stepUpFrequencyDays, 12);
                 const varInvestTotalOut = varInvest ? varInvest.month * emi + varInvest.totalContributions : 0;
                 const isCurrentRow = factor === 1.0;
                 return (
