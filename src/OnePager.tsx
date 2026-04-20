@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
-import { ArrowDown, CheckCircle2, Phone, Mail, User, Building2, Send, ChevronUp, CalendarDays, Timer } from 'lucide-react';
+import { ArrowDown, CheckCircle2, Phone, Mail, User, Building2, Send, ChevronUp, CalendarDays, Timer, Shield, Eye, Scale, Rocket, RefreshCw, ArrowRightLeft, Zap, Clock } from 'lucide-react';
 import App from './App';
 
 function formatIndianNumber(amount: number) {
@@ -38,6 +38,7 @@ function StickyNav({ activeSection }: { activeSection: string }) {
   const links = [
     { id: 'hero', label: 'Home' },
     { id: 'calculator', label: 'Calculator' },
+    { id: 'our-approach', label: 'Our Approach' },
     { id: 'how-it-works', label: 'How It Works' },
     { id: 'footer', label: 'Contact' },
   ];
@@ -193,26 +194,32 @@ function HeroSection({ heroRef }: { heroRef: React.RefObject<HTMLDivElement | nu
             backgroundClip: 'text',
           } as React.CSSProperties}
         >
-          Is Your Home Loan
+          A Small Rate Drop.
           <br />
-          Rate Too High?
+          A Massive Wealth Shift.
         </h1>
 
-        <p className="text-base md:text-lg text-slate-400 font-medium max-w-2xl mx-auto leading-relaxed mb-12">
-          Check your potential savings, then let us handle the paperwork for a rate reset or balance transfer.
-        </p>
+        <p className="text-base text-slate-400 font-medium leading-relaxed">
+              When you bought your home, you focused on getting the loan approved. Now, it's time to{' '}
+              <span className="text-[#144d78] font-semibold">optimize</span> it.
+              Just a 1% reduction in your interest rate can change your financial future.
+            </p>
 
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-3">
           <a
             href="#calculator"
             className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#46b8c3] text-white font-bold text-base hover:bg-[#46b8c3]/90 transition-all"
           >
-            Check Your Savings
+            Calculate My Exact Savings
             <ArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
           </a>
+          
+          
+          <p className="text-xs text-slate-400">(Takes less than 2 minutes · Zero physical paperwork)</p>
+          <p className="text-xs text-slate-400 mt-1">🔒 Bank-grade security · Built on India's Account Aggregator (AA) network</p>
           <a
             href="#avail"
-            className="text-sm text-slate-400 hover:text-[#144d78] font-medium transition-colors"
+            className="text-sm text-slate-400 hover:text-[#144d78] font-medium transition-colors mt-1"
           >
             or skip to request a rate reset →
           </a>
@@ -328,10 +335,139 @@ export default function OnePager() {
       <HeroSection heroRef={heroRef} />
 
       {/* ═══════════════════════════════════════════
-          SECTION 2 — CALCULATOR (EXISTING, UNTOUCHED)
+          SECTION 1.5 — THE "AHA" MOMENT (SAVINGS HIGHLIGHT)
       ═══════════════════════════════════════════ */}
-      <section ref={calcRef} id="calculator" className="scroll-mt-14 pt-8">
+      <section className="scroll-mt-14">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-4">
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[#0d3a5c] tracking-tight mb-3">
+              A Small Rate Drop. A Massive Wealth Shift.
+            </h2>
+            <p className="text-base text-slate-400 font-medium leading-relaxed">
+              When you bought your home, you focused on getting the loan approved. Now, it's time to{' '}
+              <span className="text-[#144d78] font-semibold">optimize</span> it.
+              Just a 1% reduction in your interest rate can change your financial future.
+            </p>
+            <p className="text-sm text-slate-400 mt-3">
+              Stop settling for market averages. Discover your{' '}
+              <span className="text-[#144d78] font-semibold">exact personalized savings</span> down to the last rupee.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          SECTION 2 — CALCULATOR
+      ═══════════════════════════════════════════ */}
+      <section ref={calcRef} id="calculator" className="scroll-mt-14 pt-4">
         <App />
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          SECTION 2.5 — IS THIS FOR YOU? (ELIGIBILITY)
+      ═══════════════════════════════════════════ */}
+      <section className="scroll-mt-14">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="px-8 py-6 border-b border-[#46b8c3]/20 bg-[#46b8c3]/10">
+              <h3 className="text-2xl font-bold text-[#0d3a5c]">Who Benefits the Most?</h3>
+              <p className="text-base text-slate-400 font-medium mt-1">If you check these boxes, you're likely sitting on hidden savings.</p>
+            </div>
+            <div className="p-6 flex flex-col sm:flex-row items-center gap-6 justify-center">
+              {[
+                { label: 'Outstanding Loan', value: '> ₹10 Lakhs' },
+                { label: 'Remaining Tenure', value: '> 5 Years' },
+                { label: 'Current Rate', value: '8.0% or higher' },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex items-center gap-3 rounded-2xl bg-[#144d78]/[0.03] px-5 py-4">
+                  <CheckCircle2 className="w-5 h-5 text-[#46b8c3] shrink-0" />
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-400">{label}</p>
+                    <p className="text-sm font-bold text-[#0d3a5c]">{value}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="px-8 pb-6 text-center">
+              <a href="#avail" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#46b8c3] text-white font-bold text-sm hover:bg-[#46b8c3]/90 transition-all">
+                Check My Eligibility in 60 Seconds
+                <ArrowDown className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          SECTION 2.75 — OUR APPROACH: RESET-FIRST, SWITCH-SECOND
+      ═══════════════════════════════════════════ */}
+      <section id="our-approach" className="scroll-mt-14">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="px-8 py-6 border-b border-[#46b8c3]/20 bg-[#46b8c3]/10">
+              <h3 className="text-2xl font-bold text-[#0d3a5c]">The Smartest Way to Optimize Your Home Loan</h3>
+              <p className="text-base text-slate-400 font-medium mt-1">
+                Every comparison site shows you a better rate. We are the only platform that{' '}
+                <span className="text-[#144d78] font-semibold">actually gets it for you</span>.
+              </p>
+            </div>
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                {/* Step 1: Same-Bank Reset */}
+                <div className="rounded-2xl border border-[#46b8c3]/20 bg-[#46b8c3]/[0.04] p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-full bg-[#46b8c3] text-white text-sm font-bold flex items-center justify-center shrink-0">1</div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#46b8c3]">Preferred Path</p>
+                      <h4 className="text-lg font-bold text-[#0d3a5c]">The 'Same-Bank' Reset</h4>
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-500 leading-relaxed mb-4">
+                    We believe the best loan transfer is the one you don't have to make. We use data-driven insights to negotiate directly with your current lender. Often, they are happy to reprice your loan to retain a great customer like you.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#144d78] bg-[#46b8c3]/10 px-3 py-1.5 rounded-full">
+                      <Clock className="w-3 h-3" /> Done in 48 hours
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#144d78] bg-[#46b8c3]/10 px-3 py-1.5 rounded-full">
+                      <RefreshCw className="w-3 h-3" /> Zero paperwork
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#144d78] bg-[#46b8c3]/10 px-3 py-1.5 rounded-full">
+                      <CheckCircle2 className="w-3 h-3" /> Lower rate, same bank
+                    </span>
+                  </div>
+                </div>
+
+                {/* Step 2: Seamless Switch (Balance Transfer) */}
+                <div className="rounded-2xl border border-[#1b6896]/20 bg-[#1b6896]/[0.04] p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-full bg-[#1b6896] text-white text-sm font-bold flex items-center justify-center shrink-0">2</div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#1b6896]">If Needed</p>
+                      <h4 className="text-lg font-bold text-[#0d3a5c]">The Seamless Switch (Balance Transfer)</h4>
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-500 leading-relaxed mb-4">
+                    If a better deal exists elsewhere and your current lender cannot match it, our AI instantly identifies the optimal new bank. We handle 100% of the back-and-forth execution to transfer your balance smoothly.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#144d78] bg-[#1b6896]/10 px-3 py-1.5 rounded-full">
+                      <Zap className="w-3 h-3" /> Maximum savings
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#144d78] bg-[#1b6896]/10 px-3 py-1.5 rounded-full">
+                      <ArrowRightLeft className="w-3 h-3" /> Minimum friction
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#144d78] bg-[#1b6896]/10 px-3 py-1.5 rounded-full">
+                      <CheckCircle2 className="w-3 h-3" /> We manage everything
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ═══════════════════════════════════════════
@@ -342,7 +478,7 @@ export default function OnePager() {
           <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
             <div className="px-8 py-6 border-b border-[#46b8c3]/20 bg-[#46b8c3]/10">
               <h3 className="text-2xl font-bold text-[#0d3a5c]">Let Us Handle the Paperwork</h3>
-              <p className="text-base text-slate-400 font-medium mt-1">We’ll assess your eligibility, prepare the documentation, and coordinate with your bank.</p>
+              <p className="text-base text-slate-400 font-medium mt-1">No endless document uploads. No waiting in bank queues. Just intelligent, seamless execution.</p>
             </div>
 
           <AnimatePresence mode="wait">
@@ -572,17 +708,17 @@ export default function OnePager() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-12">
           <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
             <div className="px-8 py-6 border-b border-[#46b8c3]/20 bg-[#46b8c3]/10">
-              <h3 className="text-2xl font-bold text-[#0d3a5c]">How It Works</h3>
-              <p className="text-base text-slate-400 font-medium mt-1">A straightforward process — no surprises.</p>
+              <h3 className="text-2xl font-bold text-[#0d3a5c]">Smarter Borrowing in 4 Simple Steps</h3>
+              <p className="text-base text-slate-400 font-medium mt-1">No endless document uploads. No waiting in bank queues. Just intelligent, seamless execution.</p>
             </div>
 
             <div className="p-6">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mb-6">
             {[
-              { step: '1', label: 'Check Savings', desc: 'Run the calculator to see your potential savings from a rate drop.' },
-              { step: '2', label: 'Share Details', desc: 'Submit your loan info so we can assess eligibility for a reset.' },
-              { step: '3', label: 'We Do the Legwork', desc: 'We prepare the paperwork and coordinate with your bank on your behalf.' },
-              { step: '4', label: 'You Sign & Save', desc: 'You sign the supplementary agreement with your bank. Conversion fee applies.' },
+              { step: '1', label: 'Discover Exact Savings', desc: 'Securely connect your loan account. Our AI analyzes your outstanding principal, loan age & market rates to show your exact ₹ savings.' },
+              { step: '2', label: 'Choose Your Path', desc: 'View transparent options — reset with your current bank (done in 48 hrs) or switch to a new lender offering a better rate.' },
+              { step: '3', label: 'We Do the Heavy Lifting', desc: 'Sit back. We handle 100% of the negotiations, paperwork & bank coordination on your behalf.' },
+              { step: '4', label: 'Track for Life', desc: 'Your loan is optimized. Track your financial health as we continuously monitor the market for your next saving opportunity.' },
             ].map(({ step, label, desc }, i) => (
               <div
                 key={step}
@@ -608,6 +744,34 @@ export default function OnePager() {
       </section>
 
       {/* ═══════════════════════════════════════════
+          SECTION 5 — TRUST & SECURITY
+      ═══════════════════════════════════════════ */}
+      <section className="scroll-mt-14">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="px-8 py-6 border-b border-[#46b8c3]/20 bg-[#46b8c3]/10">
+              <h3 className="text-2xl font-bold text-[#0d3a5c]">Bank-Grade Security. Transparent Execution.</h3>
+              <p className="text-base text-slate-400 font-medium mt-1">Your financial data is sacred.</p>
+            </div>
+            <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { icon: Shield, title: 'RBI-Compliant', desc: 'Powered by India\'s Digital Public Infrastructure (DPI) and Account Aggregator (AA) framework. Your data is encrypted and completely secure.' },
+                { icon: Eye, title: 'Read-Only Access', desc: 'We only access the data required to calculate your savings. We do not store your sensitive banking credentials.' },
+                { icon: Scale, title: 'No Commission Bias', desc: 'Unlike platforms that push you to switch banks just to earn a commission, our AI evaluates both Reset and Transfer paths. We recommend the path that yields the highest net savings for you.' },
+                { icon: Rocket, title: 'Guaranteed Execution', desc: 'We aren\'t just an advisory service. We are an execution platform. If we show you a savings number, we manage the entire process to make it a reality.' },
+              ].map(({ icon: Icon, title, desc }) => (
+                <div key={title} className="rounded-2xl bg-[#144d78]/[0.03] p-5 text-center">
+                  <Icon className="w-6 h-6 text-[#46b8c3] mx-auto mb-3" />
+                  <p className="text-sm font-bold text-[#0d3a5c] mb-1">{title}</p>
+                  <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
           FOOTER
       ═══════════════════════════════════════════ */}
       <footer id="footer" ref={footerRef} className="scroll-mt-14 bg-[#0d3a5c] text-white">
@@ -622,7 +786,7 @@ export default function OnePager() {
                 <span className="text-lg font-bold">RateReset</span>
               </div>
               <p className="text-sm text-white/50 max-w-sm mb-6 leading-relaxed">
-                We help you get a lower interest rate on your existing home loan. Our consultation is free — bank conversion fees and supplementary agreement apply.
+                India's AI-powered home loan optimization platform. We negotiate with your existing lender to lower your rate, or seamlessly switch you to a better deal. Reset-first, switch-second.
               </p>
               <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-white/40 mb-3">Contact</h3>
               <div className="space-y-2.5 mb-6">
@@ -702,9 +866,18 @@ export default function OnePager() {
             </div>
           </div>
 
-          {/* Bottom bar */}
-          <div className="mt-12 pt-6 border-t border-white/10 text-xs text-white/50">
-            Consultation is free. Bank conversion fees & supplementary agreement apply. Not a financial advisor.
+          {/* Final CTA */}
+          <div className="mt-12 pt-8 border-t border-white/10 text-center">
+            <p className="text-lg font-bold text-white/80 mb-2">Every rate cut creates a new opportunity. Don't leave your money on the table.</p>
+            <p className="text-sm text-white/50 mb-5">Join the smarter borrowers who are actively managing their liabilities and reclaiming their wealth.</p>
+            <a
+              href="#avail"
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[#46b8c3] text-white font-bold text-sm hover:bg-[#46b8c3]/90 transition-all"
+            >
+              Start Saving Today
+              <ArrowDown className="w-4 h-4" />
+            </a>
+            <p className="text-xs text-white/30 mt-6">Consultation is free. Bank conversion fees & supplementary agreement apply. Not a financial advisor.</p>
           </div>
         </div>
       </footer>
