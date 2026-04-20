@@ -23,14 +23,14 @@ const staggerItem = {
 
 export default function PrepaymentCalc() {
   // Base Loan Details
-  const [principalStr, setPrincipalStr] = useState('1,00,00,000');
+  const [principalStr, setPrincipalStr] = useState('30,00,000');
   const [rateStr, setRateStr] = useState('8');
   const [tenureStr, setTenureStr] = useState('20');
-  const [prepaymentStr, setPrepaymentStr] = useState('10,000');
-  const [frequency, setFrequency] = useState<'daily' | 'weekly' | 'bi-weekly' | 'monthly' | 'quarterly' | 'half-yearly' | 'annually'>('monthly');
+  const [prepaymentStr, setPrepaymentStr] = useState('100');
+  const [frequency, setFrequency] = useState<'daily' | 'weekly' | 'bi-weekly' | 'monthly' | 'quarterly' | 'half-yearly' | 'annually'>('daily');
   const [enableStepUp, setEnableStepUp] = useState(false);
-  const [stepUpStr, setStepUpStr] = useState('5,000');
-  const [stepUpFrequency, setStepUpFrequency] = useState<'daily' | 'weekly' | 'bi-weekly' | 'monthly' | 'quarterly' | 'half-yearly' | 'annually'>('annually');
+  const [stepUpStr, setStepUpStr] = useState('50');
+  const [stepUpFrequency, setStepUpFrequency] = useState<'daily' | 'weekly' | 'bi-weekly' | 'monthly' | 'quarterly' | 'half-yearly' | 'annually'>('monthly');
 
   const principal = Number(principalStr.replace(/\D/g, '')) || 0;
   const rate = parseFloat(rateStr) || 0;

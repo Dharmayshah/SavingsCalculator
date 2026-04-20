@@ -1,7 +1,6 @@
 export function calculateEMI(principal: number, annualRate: number, months: number): number {
-  const dailyRate = annualRate / 365 / 100;
-  // Effective monthly rate with daily compounding: (1 + dailyRate)^30 - 1
-  const monthlyRate = Math.pow(1 + dailyRate, 30) - 1;
+  const monthlyRate = annualRate / 12 / 100;
+  if (monthlyRate === 0) return principal / months;
   return (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
 }
 
