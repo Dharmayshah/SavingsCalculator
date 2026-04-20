@@ -436,23 +436,22 @@ export default function PrepaymentCalc() {
         className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
       >
         <div className="flex items-center gap-3 border-b border-slate-100 bg-slate-50/50 px-8 py-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#144d78]/10">
-            <CheckCircle2 className="h-4 w-4 text-[#1b6896]" />
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold text-[#0d3a5c]">Sensitivity Analysis</h3>
-            <p className="text-sm text-slate-500 mt-1">Prepayment amount variations</p>
-          </div>
+          <h3 className="text-2xl font-bold text-[#0d3a5c]">Sensitivity Analysis</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse border border-slate-300">
             <thead>
+              <tr>
+                <th className="py-3 px-3 border border-slate-300" rowSpan={1}></th>
+                <th className="py-3 px-3 text-center font-bold uppercase tracking-[0.15em] text-[#1b6896] bg-[#1b6896]/[0.08] border border-slate-300" colSpan={2}>Prepay</th>
+                <th className="py-3 px-3 text-center font-bold uppercase tracking-[0.15em] text-[#2a4a7a] bg-[#2a4a7a]/[0.12] border border-slate-300" colSpan={2}>Invest</th>
+              </tr>
               <tr className="border-b border-slate-200">
                 <th className="py-4 px-3 text-center font-semibold uppercase tracking-[0.15em] text-slate-400 border border-slate-300">Prepayment</th>
-                <th className="py-4 px-3 text-center font-semibold uppercase tracking-[0.15em] text-[#1b6896] bg-[#1b6896]/[0.08] border border-slate-300">Tenure (Prepay)</th>
-                <th className="py-4 px-3 text-center font-semibold uppercase tracking-[0.15em] text-[#1b6896] bg-[#1b6896]/[0.08] border border-slate-300">Amount Saved (Prepay)</th>
-                <th className="py-4 px-3 text-center font-semibold uppercase tracking-[0.15em] text-[#2a4a7a] bg-[#2a4a7a]/[0.12] border border-slate-300">Tenure (Invest)</th>
-                <th className="py-4 px-3 text-center font-semibold uppercase tracking-[0.15em] text-[#2a4a7a] bg-[#2a4a7a]/[0.12] border border-slate-300">Amount Saved (Invest)</th>
+                <th className="py-4 px-3 text-center font-semibold uppercase tracking-[0.15em] text-[#1b6896] bg-[#1b6896]/[0.08] border border-slate-300">Tenure</th>
+                <th className="py-4 px-3 text-center font-semibold uppercase tracking-[0.15em] text-[#1b6896] bg-[#1b6896]/[0.08] border border-slate-300">Amount Saved</th>
+                <th className="py-4 px-3 text-center font-semibold uppercase tracking-[0.15em] text-[#2a4a7a] bg-[#2a4a7a]/[0.12] border border-slate-300">Tenure</th>
+                <th className="py-4 px-3 text-center font-semibold uppercase tracking-[0.15em] text-[#2a4a7a] bg-[#2a4a7a]/[0.12] border border-slate-300">Amount Saved</th>
               </tr>
             </thead>
             <tbody>
